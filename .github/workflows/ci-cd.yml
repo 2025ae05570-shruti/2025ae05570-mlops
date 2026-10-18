@@ -35,5 +35,6 @@ jobs:
           path: |
             models/
             reports/
+            mlflow.db
             mlruns/
           if-no-files-found: error

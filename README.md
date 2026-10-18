@@ -62,12 +62,13 @@ The training script uses a stratified 80/20 train/test split and stratified 5-fo
 - `models/heart_model.joblib`
 - `models/metadata.json`
 - `reports/training_summary.json`
+- MLflow tracking database in `mlflow.db`
 - MLflow runs in `mlruns/`
 - confusion matrices and ROC plots in `reports/figures/`
 
 Metrics are computed when you run it; do not copy example or guessed metrics into your report. For this small dataset, results can vary by library version and split. Explore experiments with:
 ```powershell
-mlflow ui --backend-store-uri ./mlruns --host 127.0.0.1 --port 5000
+mlflow ui --backend-store-uri sqlite:///mlflow.db --host 127.0.0.1 --port 5000
 ```
 Open `http://127.0.0.1:5000`.
 

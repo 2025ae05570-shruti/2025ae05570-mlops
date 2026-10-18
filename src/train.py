@@ -50,7 +50,8 @@ def main(data_path=None):
         "random_forest": {"model__n_estimators": [150, 300], "model__max_depth": [None, 6, 12]}
     }
     ARTIFACTS.mkdir(parents=True, exist_ok=True); MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    mlflow.set_tracking_uri((ROOT / "mlruns").as_uri())
+    tracking_db = ROOT / "mlflow.db"
+    mlflow.set_tracking_uri(f"sqlite:///{tracking_db.as_posix()}")
     mlflow.set_experiment("heart-disease-classification")
     best_name, best_search, best_auc = None, None, -1
     summary = {}
@@ -71,7 +72,7 @@ def main(data_path=None):
             mlflow.log_params(search.best_params_)
             mlflow.log_param("model_type", name)
             mlflow.log_metrics(metrics)
-            mlflow.sklearn.log_model(search.best_estimator_, artifact_path="model")
+            mlflow.sklearn.log_model(search.best_estimator_, name="model", serialization_format="cloudpickle")
             ConfusionMatrixDisplay.from_predictions(y_test, pred)
             plt.title(f"Confusion matrix: {name}")
             cm_path = ARTIFACTS / f"{name}_confusion_matrix.png"
