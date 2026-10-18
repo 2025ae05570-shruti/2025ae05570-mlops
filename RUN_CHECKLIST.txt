@@ -1,0 +1,17 @@
+RUN CHECKLIST
+[ ] Install Python 3.11, Docker, kubectl, Minikube
+[ ] Create venv and install requirements
+[ ] python scripts/download_data.py
+[ ] python scripts/make_eda.py
+[ ] python -m src.train
+[ ] ruff check src scripts tests
+[ ] pytest -q
+[ ] uvicorn src.api:app --host 0.0.0.0 --port 8000
+[ ] Docker build and local endpoint validation
+[ ] minikube start --driver=docker
+[ ] minikube image build -t heart-disease-api:1.0 .
+[ ] kubectl apply -f deployment/kubernetes.yaml
+[ ] Verify rollout, /health, /predict, /metrics, logs
+[ ] Push to GitHub and verify Actions workflow
+[ ] Add real screenshots and actual metrics to report
+[ ] Replace report placeholders with your own details
