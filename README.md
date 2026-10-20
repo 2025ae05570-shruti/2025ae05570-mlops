@@ -31,6 +31,22 @@ minikube version
 ```
 Commands below are shown for Windows PowerShell where Windows-specific activation differs. On macOS/Linux, use `python3` and `source .venv/bin/activate`.
 
+### Automated setup and deployment on Rocky Linux 9
+
+From a regular (non-root) user account on the Rocky Linux 9 VM, clone this repository and run the bootstrap script:
+```bash
+git clone <YOUR_REPOSITORY_URL>
+cd 2025ae05570-mlops
+bash scripts/install_rocky9_minikube.sh
+```
+The script checks existing RPM packages and commands, installs only missing prerequisites, verifies downloaded `kubectl` and Minikube checksums, sets up the project Python environment, trains the model if it is missing, runs the CI lint/tests, then builds and deploys the image to Minikube. All output is logged to `~/rocky9-minikube-setup-<timestamp>.log`. It may need internet access to install packages and download the dataset.
+
+If the script adds your account to the `docker` group, log out and back in, then rerun it. This is required for Docker/Minikube to work without running the cluster as root. Defaults request 2 CPUs and 4096 MB for Minikube; override them if needed:
+```bash
+MINIKUBE_CPUS=4 MINIKUBE_MEMORY=6g bash scripts/install_rocky9_minikube.sh
+```
+On success, the script prints the Minikube NodePort URLs for `/docs`, `/health`, and `/metrics`. Access from another machine may also require allowing TCP port 30080 through the VM's network/firewall; the script does not change firewall policy automatically.
+
 ## 1. Set up the environment
 ```powershell
 git clone <YOUR_REPOSITORY_URL>
